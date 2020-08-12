@@ -1,10 +1,26 @@
-import React from 'react';
+import React, { useState } from 'react';
 import foods from '../../foods.json';
 import './FoodBox.css';
 import 'bulma/css/bulma.css';
 
 const Foodbox = (props) => {
-  const { name, calories, image, quantity } = props.food;
+  const { name, calories, image } = props.food;
+  //Ceci est un hook
+  const [quantityValue, setQuantityValue] = useState(0);
+
+  const handleInputChange = (event) => {
+    const value = event.target.value;
+    setQuantityValue(value);
+    console.log(quantityValue);
+  };
+
+  const handleFoodToList = () => {
+    const { food, handleFoodToList } = props;
+    food.quantity = parseInt(quantityValue);
+    handleFoodToList(food);
+    setQuantityValue(0);
+  };
+
   return (
     <div className="box">
       <article className="media">
@@ -24,10 +40,17 @@ const Foodbox = (props) => {
         <div className="media-right">
           <div className="field has-addons">
             <div className="control">
-              <input className="input" type="number" value="1" />
+              <input
+                className="input"
+                type="number"
+                value={quantityValue}
+                onChange={handleInputChange}
+              />
             </div>
             <div className="control">
-              <button className="button is-info">+</button>
+              <button onClick={handleFoodToList} className="button is-info">
+                +
+              </button>
             </div>
           </div>
         </div>
